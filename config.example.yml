@@ -1,0 +1,49 @@
+# Application Configuration
+app:
+  port: 3000
+  email: admin@example.com
+
+# Database Configuration
+database:
+  url: mongodb://localhost:27017/nestjs-ddd
+  logging: false
+  sync: true
+
+# JWT Configuration
+jwt:
+  secret: your-super-secret-jwt-key
+  expiresIn: 3600
+
+# gRPC Configuration
+grpc:
+  user:
+    port: 50053
+    url: localhost:50053
+
+# Redis Configuration
+redis:
+  host: localhost
+  port: 6379
+  password: ''
+  db: 0
+
+# Security Configuration
+security:
+  cors:
+    enabled: true
+    origins:
+      - http://localhost:3000
+      - http://localhost:5173
+    methods:
+      - GET
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      - OPTIONS
+    credentials: true
+    maxAge: 86400
+  helmet:
+    enabled: true
+    contentSecurityPolicy: false
+    crossOriginEmbedderPolicy: false

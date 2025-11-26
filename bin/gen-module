@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Example: ./bin/gen-module <module_name>
+
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 NAME"
+  exit 2
+fi
+
+NAME_RAW="$1"
+
+pascal_case() {
+  local s="$1"
+  s="$(echo "$s" | sed -E 's/[^a-zA-Z0-9]+/ /g')"
+  local out=""
+  for w in $s; do
+    first="$(echo "${w:0:1}" | tr '[:lower:]' '[:upper:]')"
+    rest="${w:1}"
+    out+="$first$rest"
+  done
+  echo "$out"
+}
+
+lower_case() { echo "$(echo "$1" | tr '[:upper:]' '[:lower:]')"; }
+
+NAME_PASCAL="$(pascal_case "$NAME_RAW")"
+NAME_LOWER="$(lower_case "$NAME_RAW")"
+
+BASE_DIR="src/$NAME_LOWER"
+
+mkdir -p "$BASE_DIR"
+
+dirs=(
+  application/commands
+  application/handlers
+  application/events
+  application/queries
+  application/dtos
+  domain/dtos
+  domain/entities
+  domain/enums
+  domain/repositories
+  domain/services
+  domain/valueobjects
+  domain/exceptions
+  domain/interfaces
+  infrastructure/mappers
+  infrastructure/models
+  infrastructure/repositories
+  infrastructure/services
+  presentation/http/controllers
+  presentation/http/grpc
+  presentation/http/dtos
+)
+
+echo "Scaffolded auth submodule at $BASE_DIR"
+echo "Created module: $BASE_DIR/${NAME_PASCAL}Module.ts"
